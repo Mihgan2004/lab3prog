@@ -1,6 +1,6 @@
 public interface HasDescription {
 
-    void setDescriptions(HumanDescription...descriptions);
+    void setDescriptions(HumanDescription...descriptions) throws DescriptionHasAlreadyBeenException;
 
     HumanDescription[] getDescription();
 

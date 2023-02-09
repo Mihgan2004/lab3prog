@@ -1,68 +1,89 @@
 public class Main {
     public static void main(String[] args) {
+            Season summer = Season.SUMMER;
+            summer.start();
 
-        Season summer = Season.SUMMER;
-        summer.start();
+            Human afan = new Human("Афанасий", "Иванович");
+            Place otrad = new Place("Отрадное");
 
-        Human afan = new Human("Афанасий Иванович");
-        Place otrad = new Place("Отрадное");
+            afan.doAction(new Action(Verb.TRAVEL, "в " + otrad.getName()));
+            Period.go("2 недели");
+            afan.doAction(new Action(Verb.LEAVE, "из " + otrad.getName()));
 
-        afan.doAction(new Action(Verb.TRAVEL, "в " + otrad.getName()));
-        Period.go("2 недели");
-        afan.doAction(new Action(Verb.LEAVE, "из " +  otrad.getName()));
+            Period.go("4 месяца");
 
-        Period.go("4 месяца");
+            Season winter = Season.WINTER;
+            winter.start();
 
-        Season winter = Season.WINTER;
-        winter.start();
 
-        Human krasavica = new Human("Красавица");
-        krasavica.setDescriptions(HumanDescription.RICH, HumanDescription.NOBLE);
+            Human krasavica = new Human("Красавица", "");
 
-        Human nastya = new Human("Настасья Филипповна");
+            try {
+                krasavica.setDescriptions(HumanDescription.RICH, HumanDescription.NOBLE);
+            } catch (DescriptionHasAlreadyBeenException e){
+                e.printStackTrace();
+            }
 
-        Event rumor = new Rumor(afan.getName() + " женится на " + krasavica.getNameAndDescription());
-        rumor.doAction(nastya);
+            Human nastya = new Human("Настасья", "Филипповна");
 
-        nastya.doAction(new Action(Verb.SHOW, "необыкновенную решимость."));
-        nastya.doAction(new Action(Verb.DISCOVER, "самый неожиданный характер."));
+            Event rumor = new Event(afan.getName() + " женится на " + krasavica.getNameAndDescription()) {
+                @Override
+                public void doAction() {
+                    System.out.println("Слух \"" + super.getName() + "\" донёсся.");
+                }
 
-        Place domik = new Place("деревенский домик");
-        nastya.doAction(new Action(Verb.LEAVE, domik.getName()));
+                @Override
+                public void doAction(Human human) {
+                    System.out.println("Слух \"" + super.getName() + "\" донёсся до " + human.getName());
+                }
+            };
 
-        Place saintP = new Place("Петербург");
-        nastya.doAction(new Action(Verb.TRAVEL, "в " + saintP.getName()));
+            rumor.doAction(nastya);
 
-        afan.speak(nastya);
+            nastya.doAction(new Action(Verb.SHOW, "необыкновенную решимость."));
+            nastya.doAction(new Action(Verb.DISCOVER, "самый неожиданный характер."));
 
-        afan.doActions(new Action(Verb.REALIZE, "нужно изменить слог"),
-                new Action(Verb.REALIZE, "нужно изменить диапозон голоса"),
-                new Action(Verb.REALIZE, "нужно изменить тему разговора"),
-                new Action(Verb.REALIZE, "нужно изменить логику"));
+            Place domik = new Place("деревенский домик");
+            nastya.doAction(new Action(Verb.LEAVE, domik.getName()));
 
-        afan.doAction(new Action(Verb.DIDNTRECOGNIZE, nastya.getName()));
+            Place saintP = new Place("Петербург");
+            nastya.doAction(new Action(Verb.TRAVEL, "в " + saintP.getName()));
 
-        nastya.setDescriptions(HumanDescription.KNOWLEDGEABLE, HumanDescription.UNDERSTANDING);
+            afan.speak(nastya);
 
-        nastya.deleteDescriptions(HumanDescription.TIMID,
-                HumanDescription.INDEFINITE,
-                HumanDescription.CHARMING,
-                HumanDescription.PLAYFULNESS,
-                HumanDescription.NAIVETY,
-                HumanDescription.SAD,
-                HumanDescription.THOUGHTFUL,
-                HumanDescription.SURPRISED,
-                HumanDescription.INCREDULOUS,
-                HumanDescription.CRYING,
-                HumanDescription.RESTLESS
-        );
+            afan.doActions(new Action(Verb.REALIZE, "нужно изменить слог"),
+                    new Action(Verb.REALIZE, "нужно изменить диапозон голоса"),
+                    new Action(Verb.REALIZE, "нужно изменить тему разговора"),
+                    new Action(Verb.REALIZE, "нужно изменить логику"));
 
-        nastya.doAction(new Action(Verb.LAUGH));
-        nastya.doAction(new Action(Verb.PRICK, afan.getName() + " ядовитейшими сарказмами"));
+            afan.doAction(new Action(Verb.DIDNTRECOGNIZE, nastya.getName()));
 
-        Condition.make(afan.getName() + " сейчас же женится", nastya.getName() + " будет всё равно");
-        nastya.doAction(new Action(Verb.DONTALLOW, "брак для " + afan.getName()));
-        Condition.make(nastya.getName() + " хочется", "так быть и должно");
+            try {
+                nastya.setDescriptions(HumanDescription.KNOWLEDGEABLE, HumanDescription.UNDERSTANDING);
+            } catch (DescriptionHasAlreadyBeenException e){
+                e.printStackTrace();
+            }
+
+            nastya.deleteDescriptions(HumanDescription.TIMID,
+                    HumanDescription.INDEFINITE,
+                    HumanDescription.CHARMING,
+                    HumanDescription.PLAYFULNESS,
+                    HumanDescription.NAIVETY,
+                    HumanDescription.SAD,
+                    HumanDescription.THOUGHTFUL,
+                    HumanDescription.SURPRISED,
+                    HumanDescription.INCREDULOUS,
+                    HumanDescription.CRYING,
+                    HumanDescription.RESTLESS
+            );
+
+            nastya.doAction(new Action(Verb.LAUGH));
+            nastya.doAction(new Action(Verb.PRICK, afan.getName() + " ядовитейшими сарказмами"));
+
+            Condition.make(afan.getName() + " сейчас же женится", nastya.getName() + " будет всё равно");
+            nastya.doAction(new Action(Verb.DONTALLOW, "брак для " + afan.getName()));
+            Condition.make(nastya.getName() + " хочется", "так быть и должно");
+
 
     }
 }
